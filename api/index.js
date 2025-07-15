@@ -1,34 +1,55 @@
 const express = require('express');
+const mongoose = require('mongoose');
+require('dotenv').config();
+
 const app = express();
+app.use(express.json());
+
 const PORT = process.env.PORT || 3000;
 
-// Middleware to parse JSON
-app.use(express.json())
+// MongoDB connection
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log('✅ MongoDB connected'))
+    .catch(err => console.error('❌ MongoDB connection error:', err));
 
-// Home route
-app.get('/', (req, res) => {
-    res.send('Hello, Node.js Backend!');
+// Sample model
+const UserSchema = new mongoose.Schema({
+    name: String,
+    email: String,
+    age: Number
+});
+const User = mongoose.model('User', UserSchema);
+
+// Test routes
+app.post('/api/users', async (req, res) => {
+    try {
+        const newUser = new User(req.body);
+        const saved = await newUser.save();
+        res.status(201).json(saved);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
 });
 
-// Example JSON Route (GET)
-app.get('/api/data', (req, res) => {
-    res.json({
-        message: 'Here is some sample JSON data!',
-        success: true
-    })
-})
+app.get('/api/users', async (req, res) => {
+    const users = await User.find();
+    res.json(users);
+});
 
-// Example POST Route (Receive JSON)
-app.post('/api/submit', (req, res) => {
-    const data = req.body
-    console.log('Received data:', data)
-    res.json( {
-        message: 'Data received successfully!',
-        youData: data
-    })
-})
+app.get('/', (req, res) => {
+    res.send('📚 Library Management API is running!');
+});
+
+
+// Routes
+const bookRoutes = require('./routes/books');
+const studentRoutes = require('./routes/students');
+const issueRoutes = require('./routes/issues');
+
+app.use('/api/books', bookRoutes);
+app.use('/api/students', studentRoutes);
+app.use('/api/issues', issueRoutes);
 
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-    console.log('Press Ctrl+C to stop...')
+    console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
