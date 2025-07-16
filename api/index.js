@@ -1,9 +1,17 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors')
 require('dotenv').config();
 
+const authRoutes = require('./routes/auth');
+
 const app = express();
+
+app.use(cors());
 app.use(express.json());
+
+// Connnect Routes
+app.use('/auth', authRoutes);
 
 const PORT = process.env.PORT || 3000;
 
@@ -18,7 +26,7 @@ const UserSchema = new mongoose.Schema({
     email: String,
     age: Number
 });
-const User = mongoose.model('User', UserSchema);
+// const User = mongoose.model('User', UserSchema);
 
 // Test routes
 app.post('/api/users', async (req, res) => {

@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Book = require('../models/Book');
 
-// Add book
-router.post('/', async (req, res) => {
+const { auth, roleCheck } = require('../middleware/auth.middleware.js');
+
+// Add book (only admin can add)
+router.post('/', auth, roleCheck(['admin']), async (req, res) => {
     try {
         const book = new Book(req.body);
         const saved = await book.save();
