@@ -1,17 +1,18 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors')
-require('dotenv').config();
-
-const authRoutes = require('./routes/auth');
-
 const app = express();
+const mongoose = require('mongoose');
+const cors = require('cors');
+require('dotenv').config();
 
 app.use(cors());
 app.use(express.json());
 
-// Connnect Routes
+const authRoutes = require('./routes/auth');
+const bookRoutes = require('./routes/books');
+
+// Connect Routes
 app.use('/auth', authRoutes);
+app.use('/api/books', bookRoutes);
 
 const PORT = process.env.PORT || 3000;
 
@@ -19,7 +20,7 @@ const PORT = process.env.PORT || 3000;
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('✅ MongoDB connected'))
     .catch(err => console.error('❌ MongoDB connection error:', err));
-
+    
 // Sample model
 const UserSchema = new mongoose.Schema({
     name: String,
@@ -50,11 +51,10 @@ app.get('/', (req, res) => {
 
 
 // Routes
-const bookRoutes = require('./routes/books');
+// const bookRoutes = require('./routes/books');
 const studentRoutes = require('./routes/students');
 const issueRoutes = require('./routes/issues');
 
-app.use('/api/books', bookRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/issues', issueRoutes);
 

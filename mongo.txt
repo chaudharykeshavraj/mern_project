@@ -5,6 +5,28 @@ mongodb+srv://keshav:keshav2004@mern-project.rdtqlk6.mongodb.net/
 103.10.31.15/32
 (includes your current IP address)
 
+auth:
+{
+	"name": "Keshav",
+	"email": "keshav@admin.com",
+	"password": "password",
+	"role": "admin"
+}
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODc2ZjdkMzE5MjliZjhhYzBhM2M2ZjEiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTI2MjcyMjcsImV4cCI6MTc1MjcxMzYyN30.1lbfjn8fNHnUhr7sz2b2Iq6xlAhr_SJN9U_e5Lyek60",
+    "role": "admin"
+}
+
+{
+    "name": "Siddhartha",
+    "email": "siddhartha@admin.com",
+    "password": "password",
+    "role": "admin"
+}
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODc3N2Y5MzUwNzJkYTM4ZGU2MDIzZTgiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTI2NjE5MzQsImV4cCI6MTc1Mjc0ODMzNH0.eRvEm_pwwOYQKGJpAKR078y1Kp0VxAU_2UcucoSqD-Q",
+    "role": "admin"
+}
 
 Students:
 [
