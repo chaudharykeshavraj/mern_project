@@ -5,11 +5,12 @@ const Book = require('../models/Book');
 const { auth, roleCheck } = require('../middleware/auth.middleware.js');
 
 // Add book (only admin can add)
-/* router.post('/', auth, roleCheck(['admin']), async (req, res) => {
+router.post('/', auth, roleCheck(['admin']), async (req, res) => {
     console.log('📚 POST /books route hit');
     console.log('📦 Received body:', req.body); // Add this
 
     try {
+        console.log('📦 Book body:', req.body); // <-- ADD THIS TEMPORARILY
         const book = new Book(req.body);
         const saved = await book.save();
         res.status(201).json(saved);
@@ -17,7 +18,7 @@ const { auth, roleCheck } = require('../middleware/auth.middleware.js');
         console.log('❌ Error while saving book:', err.message);  // Add this
         res.status(400).json({ error: 'Failed to add book' });
     }
-}); */
+});
 
 // Temporary test routes
 router.post('/test', async (req, res) => {

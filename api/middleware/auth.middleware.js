@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 exports.auth = (req, res, next) => {
     const authHeader = req.headers.authorization;
     console.log('Authorization Header:', authHeader);
+    console.log('🔐 JWT_SECRET used:', process.env.JWT_SECRET); // ✅ ADD THIS HERE
 
     if (!authHeader)
         return res.status(401).json({ error: 'Token missing' });
