@@ -11,14 +11,18 @@ router.post('/', auth, roleCheck(['admin']), async (req, res) => {
         const saved = await book.save();
         res.status(201).json(saved);
     } catch (err) {
-        res.status(400).json({ error: err.message });
+        res.status(400).json({ error: 'Failed to add book' });
     }
 });
 
-// Get all books
+// Get all books(anyone can access)
 router.get('/', async (req, res) => {
-    const books = await Book.find();
-    res.json(books);
+    try {
+        const books = await Book.find();
+        res.json(books);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch books' });
+    }
 });
 
 module.exports = router;
