@@ -8,6 +8,7 @@ const { auth, roleCheck } = require('../middleware/auth.middleware.js');
 router.post('/', auth, roleCheck(['admin']), async (req, res) => {
     console.log('📚 POST /books route hit');
     console.log('📦 Received body:', req.body); // Add this
+    console.log('👤 User from token:', req.user);
 
     try {
         console.log('📦 Book body:', req.body); // <-- ADD THIS TEMPORARILY

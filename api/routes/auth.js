@@ -20,10 +20,11 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// Login
+// ✅ Login route with improvements
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
+        
         const user = await User.findOne({ email });
         if (!user) return res.status(401).json({ error: 'Invalid credentials' });
 
@@ -31,12 +32,18 @@ router.post('/login', async (req, res) => {
         if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
 
         const token = jwt.sign(
-        { userId: user._id, role: user.role },
-        'process.env.JWT_SECRET',    // 'your_jwt_secret'
-        { expiresIn: '1d' }
+            { userId: user._id, role: user.role },
+            process.env.JWT_SECRET, // ✅ fixed from 'process.env.JWT_SECRET'
+            { expiresIn: '1d' }
         );
 
-        res.json({ token, role: user.role });
+        // ✅ improved response
+        res.status(200).json({
+            token,
+            role: user.role,
+            email: user.email,
+            name: user.name
+        });
     } catch (err) {
         res.status(500).json({ error: 'Login error' });
     }

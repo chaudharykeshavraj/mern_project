@@ -13,42 +13,54 @@ const AddBook = () => {
     };
 
     const handleSubmit = async (e) => {
-    e.preventDefault();
-    const token = localStorage.getItem('token');
+        e.preventDefault();
 
-    const formData = {
-        ...form,
-        publishedYear: parseInt(form.publishedYear), // ✅ convert to number
+        const token = localStorage.getItem('token');
+        const formData = {
+            ...form,
+            publishedYear: parseInt(form.publishedYear),
+        };
+
+        try {
+            await axios.post('http://localhost:5000/api/books', formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+            });
+            alert('✅ Book added successfully');
+        } catch (err) {
+            alert(err.response?.data?.error || '❌ Failed to add book');
+        }
     };
-
-    try {
-        await axios.post('http://localhost:5000/api/books', formData, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-        });
-        alert('✅ Book added successfully');
-    } catch (err) {
-        alert(err.response?.data?.error || '❌ Failed to add book');
-    }
-};
-
 
     return (
         <div>
-        <h2>Add Book (Admin only)</h2>
-        <form onSubmit={handleSubmit}>
-            <input name="title" placeholder="Title" onChange={handleChange} required />
-            <input name="author" placeholder="Author" onChange={handleChange} required />
-            <input
-            name="publishedYear"
-            type="number"
-            placeholder="Published Year"
-            onChange={handleChange}
-            required
-            />
-            <button type="submit">Add Book</button>
-        </form>
+            <h2>Add Book (Admin only)</h2>
+            <form onSubmit={handleSubmit}>
+                <input
+                    name="title"
+                    placeholder="Title"
+                    value={form.title}
+                    onChange={handleChange}
+                    required
+                />
+                <input
+                    name="author"
+                    placeholder="Author"
+                    value={form.author}
+                    onChange={handleChange}
+                    required
+                />
+                <input
+                    name="publishedYear"
+                    type="number"
+                    placeholder="Published Year"
+                    value={form.publishedYear}
+                    onChange={handleChange}
+                    required
+                />
+                <button type="submit">Add Book</button>
+            </form>
         </div>
     );
 };

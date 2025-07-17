@@ -1,36 +1,64 @@
 import React, { useState } from 'react';
-import { login } from '../services/api';
+import axios from 'axios';
 
 const Login = () => {
-    const [form, setForm] = useState({ email: '', password: '' });
-
-    const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-    };
+  // Declare state variables
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-        const res = await login(form);
-        localStorage.setItem('token', res.data.token);
-        localStorage.setItem('role', res.data.role);
-        // console.log('Login Response:', res.data)    // added this line to see token in browser console
-        alert(`✅ Login successful! Role: ${res.data.role}`);
+            const response = await axios.post('http://localhost:5000/api/auth/login', {
+                email,
+                password,
+            });
+
+            const { token, role } = response.data;
+
+            console.log("🔑 Token received:", token);
+
+            localStorage.setItem('token', token);   // <== This saves token in localStorage
+            localStorage.setItem('role', role);
+
+            alert('Login successful ✅');
+            // redirect or other logic here
         } catch (err) {
-        alert(err.response?.data?.error || '❌ Login failed');
+            alert(err.response?.data?.error || 'Login failed ❌');
         }
     };
 
     return (
-        <div>
-        <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
-            <input name="email" type="email" placeholder="Email" onChange={handleChange} required />
-            <input name="password" type="password" placeholder="Password" onChange={handleChange} required />
-            <button type="submit">Login</button>
-        </form>
-        </div>
-    );
+    <form onSubmit={handleSubmit}>
+        <input 
+        type="email" 
+        placeholder="Email" 
+        value={email}
+        onChange={(e) => setEmail(e.target.value)} 
+        required 
+        />
+        <input 
+        type="password" 
+        placeholder="Password" 
+        value={password}
+        onChange={(e) => setPassword(e.target.value)} 
+        required 
+        />
+        <button type="submit">Login</button>
+
+        {/* Temporary for localStorage check */}
+        <button 
+        type="button" 
+        onClick={() => {
+            localStorage.setItem('token', 'test123');
+            alert('Set test token');
+        }}
+        >
+        Set Test Token
+        </button>
+    </form>
+);
+
 };
 
 export default Login;

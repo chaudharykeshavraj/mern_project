@@ -12,7 +12,7 @@ app.use(express.json());
 const authRoutes = require('./routes/auth');
 
 // Connect Routes
-app.use('/auth', authRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes);
 
 const PORT = process.env.PORT || 3000;
