@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Dashboard from './components/Dashboard';
-import Books from './components/Books';
+// import Books from './components/Books';
 import Students from './components/Students';
 import DashboardLayout from './components/DashboardLayout';
 import Login from './components/Login';
@@ -16,7 +16,7 @@ function App() {
         
         {/* Layout-wrapped routes */}
         <Route path="/dashboard" element={<DashboardLayout><Dashboard /></DashboardLayout>} />
-        <Route path="/books" element={<DashboardLayout><Books /></DashboardLayout>} />
+        {/* <Route path="/books" element={<DashboardLayout><Books /></DashboardLayout>} /> */}
         <Route path="/students" element={<DashboardLayout><Students /></DashboardLayout>} />
       </Routes>
     </Router>

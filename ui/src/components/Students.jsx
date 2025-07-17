@@ -1,6 +1,6 @@
 import React from 'react';
 
-const StudentsList = () => {
+const Students = () => {
     const students = [
         { name: 'Ram', email: 'ram@gmail.com', role: 'student' },
         { name: 'Shyam', email: 'shyam@gmail.com', role: 'student' },
@@ -26,4 +26,4 @@ const StudentsList = () => {
     );
 };
 
-export default StudentsList;
+export default Students;
