@@ -37,29 +37,43 @@ const AddBook = () => {
         <div>
             <h2>Add Book (Admin only)</h2>
             <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+                <label htmlFor="title" className="form-label">Title</label>
                 <input
-                    name="title"
-                    placeholder="Title"
-                    value={form.title}
-                    onChange={handleChange}
-                    required
+                id="title"
+                name="title"
+                type="text"
+                className="form-control"
+                placeholder="Title"
+                onChange={handleChange}
+                required
                 />
+            </div>
+            <div className="mb-3">
+                <label htmlFor="author" className="form-label">Author</label>
                 <input
-                    name="author"
-                    placeholder="Author"
-                    value={form.author}
-                    onChange={handleChange}
-                    required
+                id="author"
+                name="author"
+                type="text"
+                className="form-control"
+                placeholder="Author"
+                onChange={handleChange}
+                required
                 />
+            </div>
+            <div className="mb-3">
+                <label htmlFor="publishedYear" className="form-label">Published Year</label>
                 <input
-                    name="publishedYear"
-                    type="number"
-                    placeholder="Published Year"
-                    value={form.publishedYear}
-                    onChange={handleChange}
-                    required
+                id="publishedYear"
+                name="publishedYear"
+                type="number"
+                className="form-control"
+                placeholder="Published Year"
+                onChange={handleChange}
+                required
                 />
-                <button type="submit">Add Book</button>
+            </div>
+                <button type="submit" className="btn btn-primary">Add Book</button>
             </form>
         </div>
     );
