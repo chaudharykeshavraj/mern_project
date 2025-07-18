@@ -1,5 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -21,7 +23,10 @@ const Navbar = () => {
 
     const handleLogout = () => {
         localStorage.clear(); // remove token, user, etc.
-        navigate('/login');   // redirect to login page
+        toast.success("Logged Out");
+        setTimeout(() => {
+            navigate('/login');   // redirect to login page
+        }, 1000);
     };
 
     return (

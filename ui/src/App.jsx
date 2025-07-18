@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import DashboardLayout from './components/DashboardLayout';
 import Login from './pages/Login';
@@ -13,6 +15,7 @@ import Issues from './pages/Issues';
 function App() {
   return (
     <Router>
+      <ToastContainer position="top-right" autoClose={1500} /> {/* 👈 Add this line globally */}
       <Routes>
         {/* Public routes */}
         <Route path="/" element={<Navigate to="/login" replace />} />
