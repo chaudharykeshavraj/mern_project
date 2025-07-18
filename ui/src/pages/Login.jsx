@@ -33,7 +33,7 @@ const Login = () => {
                 } else {
                     navigate('/dashboard');
                 }
-            }, 1500);  // 1.5 seconds delay to show toast
+            }, 1000);  // 1.5 seconds delay to show toast
 
             } catch (err) {
             toast.error(err.response?.data?.error || 'Login failed!');

@@ -1,18 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
-const DashboardLayout = () => (
-    <div>
+const DashboardLayout = () => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+        navigate('/login');
+        }
+    }, []);
+
+    return (
+        <div>
         <Navbar />
         <div style={{ display: "flex" }}>
             <Sidebar />
             <main style={{ padding: "20px", flexGrow: 1 }}>
-                <Outlet />
+            <Outlet />
             </main>
         </div>
-    </div>
-);
+        </div>
+    );
+};
 
 export default DashboardLayout;
