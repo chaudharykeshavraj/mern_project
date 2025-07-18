@@ -1,26 +1,37 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Dashboard from "./components/Dashboard";
-import Books from "./pages/Books";
-import Students from "./pages/Students";
-import DashboardLayout from "./components/DashboardLayout";
-import Login from "./components/Login"; // Optional
-import AddBookPage from "./pages/AddBookPage"; // ✅ Also import AddBookPage
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+
+import DashboardLayout from './components/DashboardLayout';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import Books from './pages/Books';
+import AddBook from './pages/AddBook';
+import Students from './pages/Students';
+import Issues from './pages/Issues';
 
 function App() {
   return (
     <Router>
       <Routes>
+        {/* Public routes */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
-        {/* Dashboard pages with layout */}
+        {/* Protected routes WITH layout */}
         <Route path="/" element={<DashboardLayout />}>
-          <Route index element={<Dashboard />} />
+          <Route path="dashboard" element={<Dashboard />} />
           <Route path="books" element={<Books />} />
           <Route path="students" element={<Students />} />
+          <Route path="issues" element={<Issues />} />
+          <Route path="/books/add" element={<AddBook />} />
         </Route>
 
-        {/* Optional: Separate route for login (outside layout) */}
-        <Route path="/login" element={<Login />} />
-        
+        {/* Protected route WITHOUT layout */}
+
+        {/* Optional: Catch all unmatched routes and redirect */}
+        {/* <Route path="*" element={<Navigate to="/login" />} /> */}
       </Routes>
     </Router>
   );
