@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -16,12 +17,13 @@ const Login = () => {
                 email,
                 password
             });
+            
             const { token, role } = response.data;
             
-            localStorage.setItem('token', res.data.token);
+            localStorage.setItem('token', token);
             localStorage.setItem('role', role);
 
-            toast.success('Login successful ✅');
+            toast.success('Login successful');
 
             setTimeout(() => {
                 if (role === 'admin' || role === 'teacher') {
@@ -34,7 +36,8 @@ const Login = () => {
             }, 1500);  // 1.5 seconds delay to show toast
 
             } catch (err) {
-            toast.error(err.response?.data?.error || 'Login failed ❌');
+            toast.error(err.response?.data?.error || 'Login failed!');
+            console.error(err.response?.data || err.message);;
         }
     };
 
