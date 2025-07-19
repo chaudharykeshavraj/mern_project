@@ -99,10 +99,13 @@ const Login = () => {
         }
     };
 
-    return (
+    {/* return (
         <div className="container d-flex justify-content-center align-items-center vh-100">
             <ToastContainer position="top-right" />
             <div className="card p-4 shadow" style={{ maxWidth: '400px', width: '100%' }}>
+
+                
+
                 <h2 className="mb-4 text-center">Login</h2>
                 <form onSubmit={handleSubmit} noValidate>
                     <div className="mb-3">
@@ -150,7 +153,91 @@ const Login = () => {
                 </div>
             </div>
         </div>
+    ); */}
+
+    
+    return (
+    <div className="container d-flex justify-content-center align-items-center vh-100">
+        <ToastContainer position="top-right" />
+        <div
+            className="d-flex shadow"
+            style={{ maxWidth: '800px', width: '100%', borderRadius: '0.25rem' }}
+        >
+            {/* Left side title */}
+            <div
+                style={{
+                    flex: 1,
+                    backgroundColor: '#1877f2',
+                    color: 'white',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '2rem',
+                    fontSize: '2rem',
+                    fontWeight: 'bold',
+                    borderTopLeftRadius: '0.25rem',
+                    borderBottomLeftRadius: '0.25rem',
+                    userSelect: 'none',
+                }}
+            >
+                Himalaya College Library
+            </div>
+
+            {/* Right side: your existing login card */}
+            <div style={{ flex: 1 }}>
+                <div className="card p-4 shadow" style={{ maxWidth: '400px', width: '100%' }}>
+                    <h2 className="mb-4 text-center">Login</h2>
+                    <form onSubmit={handleSubmit} noValidate>
+                        <div className="mb-3">
+                            <label htmlFor="email" className="form-label">Email address</label>
+                            <input
+                                id="email"
+                                type="email"
+                                className={`form-control ${emailError ? 'is-invalid' : ''}`}
+                                placeholder="Enter email"
+                                value={email}
+                                onChange={e => handleChange('email', e.target.value)}
+                                onBlur={() => handleBlur('email')}
+                            />
+                            {emailError && <div className="invalid-feedback">{emailError}</div>}
+                        </div>
+
+                        <div className="mb-3 position-relative">
+                            <label htmlFor="password" className="form-label">Password</label>
+                            <div className="input-group">
+                                <input
+                                    id="password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    className={`form-control ${passwordError ? 'is-invalid' : ''}`}
+                                    placeholder="Enter password"
+                                    value={password}
+                                    onChange={e => handleChange('password', e.target.value)}
+                                    onBlur={() => handleBlur('password')}
+                                />
+
+                                <span
+                                    className="input-group-text"
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={() => setShowPassword(!showPassword)}
+                                >
+                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                </span>
+                            </div>
+                            {passwordError && <div className="invalid-feedback">{passwordError}</div>}
+                        </div>
+
+                        <button type="submit" className="btn btn-primary w-100">Login</button>
+                    </form>
+                    <div className="mt-3 text-center">
+                        <small>Don't have an account? <a href="/register">Register here</a></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     );
+
+
 };
 
 export default Login;
