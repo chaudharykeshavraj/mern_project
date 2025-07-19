@@ -14,8 +14,9 @@ import Issues from './pages/Issues';
 
 function App() {
   return (
+    <>
+    <ToastContainer position="top-right" autoClose={1000} /> {/* 👈 Add this line globally */}
     <Router>
-      <ToastContainer position="top-right" autoClose={1500} /> {/* 👈 Add this line globally */}
       <Routes>
         {/* Public routes */}
         <Route path="/" element={<Navigate to="/login" replace />} />
@@ -37,6 +38,7 @@ function App() {
         {/* <Route path="*" element={<Navigate to="/login" />} /> */}
       </Routes>
     </Router>
+    </>
   );
 }
 

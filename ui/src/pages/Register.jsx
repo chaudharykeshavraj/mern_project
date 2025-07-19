@@ -1,26 +1,49 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Select from 'react-select';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
 
 const Register = () => {
     const [form, setForm] = useState({ name: '', email: '', password: '', role: 'student' });
+    const [touched, setTouched] = useState({ name: false, email: false, password: false });
+
+    const [showPassword, setShowPassword] = useState(false);
+
     const navigate = useNavigate();
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
+    const handleFocus = (e) => {
+        const name = e.target.name;
+        setTouched((prev) => ({ ...prev, [name]: true }));
+    };
+
+    const isValidEmail = (email) =>
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (
+            form.name.length < 3 ||
+            !isValidEmail(form.email) ||
+            form.password.length < 6
+        ) {
+            toast.error('Please fix validation errors.');
+            return;
+        }
+
         try {
             await axios.post('http://localhost:5000/api/auth/register', form);
-            toast.success('✅ Registration successful!');
-            setTimeout(() => navigate('/login'), 2000);
+            toast.success('Registration successful');
+            setTimeout(() => navigate('/login'), 1500);
         } catch (err) {
-            toast.error(err.response?.data?.error || '❌ Registration failed');
+            toast.error(err.response?.data?.error || 'Registration failed');
         }
     };
 
@@ -40,9 +63,14 @@ const Register = () => {
                             placeholder="Enter full name"
                             value={form.name}
                             onChange={handleChange}
+                            onFocus={handleFocus}
                             required
                         />
+                        {touched.name && form.name.length < 3 && (
+                            <div className="text-danger mt-1">Name must be at least 3 characters</div>
+                        )}
                     </div>
+
                     <div className="mb-3">
                         <label htmlFor="email" className="form-label">Email address</label>
                         <input
@@ -53,22 +81,41 @@ const Register = () => {
                             placeholder="Enter email"
                             value={form.email}
                             onChange={handleChange}
+                            onFocus={handleFocus}
                             required
                         />
+                        {touched.email && !isValidEmail(form.email) && (
+                            <div className="text-danger mt-1">Invalid email format</div>
+                        )}
                     </div>
+
                     <div className="mb-3">
                         <label htmlFor="password" className="form-label">Password</label>
-                        <input
-                            id="password"
-                            type="password"
-                            name="password"
-                            className="form-control"
-                            placeholder="Enter password"
-                            value={form.password}
-                            onChange={handleChange}
-                            required
-                        />
+                        <div className="input-group">
+                            <input
+                                id="password"
+                                type={showPassword ? 'text' : 'password'}
+                                name="password"
+                                className="form-control"
+                                placeholder="Enter password"
+                                value={form.password}
+                                onChange={handleChange}
+                                onFocus={handleFocus}
+                                required
+                            />
+                            <span
+                                className="input-group-text"
+                                style={{ cursor: 'pointer' }}
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </span>
+                        </div>
+                        {touched.password && form.password.length < 6 && (
+                            <div className="text-danger mt-1">Password must be at least 6 characters</div>
+                        )}
                     </div>
+
                     <div className="mb-3">
                         <label htmlFor="role" className="form-label">Select Role</label>
                         <select

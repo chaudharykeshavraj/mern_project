@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Navbar = () => {
@@ -24,14 +24,16 @@ const Navbar = () => {
     const handleLogout = () => {
         localStorage.clear(); // remove token, user, etc.
         toast.success("Logged Out");
+
         setTimeout(() => {
             navigate('/login');   // redirect to login page
         }, 1000);
     };
 
     return (
+        <>
         <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-    
+        
         <div className="container-fluid">
             <a className="navbar-brand" onClick={handleRedirectHome} href="/dashboard">Library Management System</a>
             <button
@@ -55,6 +57,9 @@ const Navbar = () => {
             </div>
         </div>
         </nav>
+
+        <ToastContainer position="top-right" autoClose={1000} />
+        </>
     );
 };
 
