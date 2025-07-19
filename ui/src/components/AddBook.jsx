@@ -22,7 +22,7 @@ const AddBook = () => {
         };
 
         try {
-            await axios.post('http://localhost:5000/api/books', formData, {
+            await axios.post(`${import.meta.env.VITE_API_URL}/api/books`, formData, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
