@@ -3,6 +3,7 @@ const router = express.Router();
 const Book = require('../models/Book');
 const upload = require('../middleware/upload'); // ✅ Must export multer instance
 const { auth, roleCheck } = require('../middleware/auth.middleware');
+const Issue = require('../models/Issue');
 
 // ✅ Add a new book (Admin only)
 router.post('/', auth, roleCheck(['admin']), async (req, res) => {
@@ -36,20 +37,31 @@ router.post('/upload', upload.single('image'), (req, res) => {
 
 // ✅ Issue a book to a student (Admin only) with debug log
 router.post('/issue', auth, roleCheck(['admin']), async (req, res) => {
-    console.log('📦 Received issue request with:', req.body); // Add this line
+    console.log('📦 Received issue request with:', req.body);
 
-    const { studentId, bookId } = req.body;
+    const { studentId, bookId, returnDate } = req.body;
 
     try {
         const book = await Book.findById(bookId);
         if (!book) return res.status(404).json({ error: 'Book not found' });
         if (book.issuedTo) return res.status(400).json({ error: 'Book already issued' });
 
+        // ✅ 1. Update book
         book.issuedTo = studentId;
         await book.save();
+
+        // ✅ 2. Create issue record
+        const newIssue = new Issue({
+            studentId,
+            bookId,
+            issueDate: new Date(),
+            returnDate: returnDate || null  // optional return date
+        });
+        await newIssue.save();
+
         res.json({ message: 'Book issued successfully', issuedBook: book });
     } catch (err) {
-        console.error('❌ Issue error:', err); // Better error logging
+        console.error('❌ Issue error:', err);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
