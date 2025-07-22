@@ -10,14 +10,6 @@ const Sidebar = () => (
             <li className="nav-item">
                 <a href="/dashboard" className="nav-link link-dark">Dashboard</a>
             </li>
-<<<<<<< HEAD
-            <li>
-                <a href="/books" className="nav-link link-dark">Books</a>
-            </li>
-            <li>
-                <a href="/students" className="nav-link link-dark">Students</a>
-            </li>
-=======
 
             <li>
                 <a href="/books" className="nav-link link-dark">Books</a>
@@ -26,8 +18,7 @@ const Sidebar = () => (
             <li>
                 <a href="/students" className="nav-link link-dark">Students</a>
             </li>
-            
->>>>>>> main
+
             <li>
                 <a href="/issues" className="nav-link link-dark">Issues</a>
             </li>

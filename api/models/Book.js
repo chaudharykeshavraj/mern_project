@@ -5,7 +5,8 @@ const BookSchema = new mongoose.Schema({
     author: {type: String, required: true},
     // isbn: String,
     publishedYear: {type: Number, required: true},
-    quantity: {type: Number, required: true, default: 1}
+    issuedTo: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
+    returnDate: { type: Date, default: null },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Book', BookSchema);

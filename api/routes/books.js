@@ -34,17 +34,24 @@ router.post('/upload', upload.single('image'), (req, res) => {
     res.status(200).json({ imageUrl: imagePath });
 });
 
-// ✅ Issue a book to a student (Admin only)
+// ✅ Issue a book to a student (Admin only) with debug log
 router.post('/issue', auth, roleCheck(['admin']), async (req, res) => {
+    console.log('📦 Received issue request with:', req.body); // Add this line
+
     const { studentId, bookId } = req.body;
 
-    const book = await Book.findById(bookId);
-    if (!book) return res.status(404).json({ error: 'Book not found' });
-    if (book.issuedTo) return res.status(400).json({ error: 'Book already issued' });
+    try {
+        const book = await Book.findById(bookId);
+        if (!book) return res.status(404).json({ error: 'Book not found' });
+        if (book.issuedTo) return res.status(400).json({ error: 'Book already issued' });
 
-    book.issuedTo = studentId;
-    await book.save();
-    res.json({ message: 'Book issued successfully' });
+        book.issuedTo = studentId;
+        await book.save();
+        res.json({ message: 'Book issued successfully', issuedBook: book });
+    } catch (err) {
+        console.error('❌ Issue error:', err); // Better error logging
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
 // ✅ Release a book from a student (Admin only)
