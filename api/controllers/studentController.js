@@ -1,11 +1,15 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
+const Student = require('../models/Student');
 
 const createStudent = async (req, res) => {
     try {
-        const { name, email, password, roll, faculty, batch } = req.body;
+        const { name, email, roll, faculty, batch } = req.body;
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const tempPassword = 'student123'; // you can also auto-generate this
+        const salt = await bcrypt.genSalt(10);
+
+        const hashedPassword = await bcrypt.hash(tempPassword, salt);
 
         const newStudent = new User({
             name,

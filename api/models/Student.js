@@ -11,6 +11,10 @@ const studentSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+        password: {
+        type: String,
+        required: true
+    },
     roll: {
         type: String,
         required: true,
@@ -27,7 +31,18 @@ const studentSchema = new mongoose.Schema({
     photo: {
         type: String, // Will store the path like `/uploads/students/xyz.jpg`
         default: ''
-    }
+    },
+    isPasswordChanged: {
+        type: Boolean,
+        default: false,
+    },
+    issuedBooks: [
+        {
+            bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' },
+            issueDate: Date,
+            returnDate: Date
+        }
+    ]
     }, {
     timestamps: true
 });

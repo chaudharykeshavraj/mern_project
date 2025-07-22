@@ -3,15 +3,13 @@ const jwt = require('jsonwebtoken');
 // ✅ Token Verification Middleware
 const auth = (req, res, next) => {
     const authHeader = req.headers['authorization'];
-    // console.log('🔐 Authorization Header:', authHeader); // For debugging
-    // console.log('🔐 JWT_SECRET used:', process.env.JWT_SECRET); // Should not be undefined
 
-    if(!authHeader)
+    if (!authHeader)
         return res.status(401).json({ error: 'Authorization header missing' });
-    
+
     const tokenParts = authHeader.split(' ');
 
-    if(tokenParts.length !== 2 || tokenParts[0] !== 'Bearer') {
+    if (tokenParts.length !== 2 || tokenParts[0] !== 'Bearer') {
         return res.status(400).json({ error: 'Invalid auth format' });
     }
 
@@ -19,7 +17,8 @@ const auth = (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log('✅ Decoded token:', decoded);
+
+        // Attach decoded token payload (e.g., { userId, role }) to request
         req.user = decoded;
         next();
     } catch (err) {
@@ -28,11 +27,9 @@ const auth = (req, res, next) => {
     }
 };
 
-// ✅ Role-based Access Control
+// ✅ Role-based Access Control Middleware
 const roleCheck = (roles) => (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
-        return res.status(403).json({ error: 'Forbidden' });
-    }
+    if (!roles.includes(req.user.role)) return res.status(403).json({ error: 'Forbidden' });
     next();
 };
 

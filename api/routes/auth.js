@@ -5,8 +5,8 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { auth, roleCheck } = require('../middleware/auth.middleware');
 const upload = require('../middleware/upload');  // Import upload middleware
+const { changePassword } = require('../controllers/authController');
 
-// ✅ Register route (Only Admin/Dept can adds new students or admins)
 // ✅ Register route (Only Admin/Dept can adds new students or admins)
 router.post('/register', auth, roleCheck(['admin']), (req, res) => {
   // Wrap in Multer middleware
@@ -109,24 +109,27 @@ router.post('/login', async (req, res) => {
 });
 
 // ✅ Change Password route (student after first login)
-router.post('/change-password', async (req, res) => {
-    const { userId, currentPassword, newPassword } = req.body;
+router.post('/change-password', auth, async (req, res) => {
+    const { currentPassword, newPassword } = req.body;
 
-    if (!userId || !currentPassword || !newPassword) {
-        return res.status(400).json({ error: 'All fields are required' });
+    if (!currentPassword || !newPassword) {
+        return res.status(400).json({ error: 'Both current and new passwords are required' });
     }
 
     try {
-        const user = await User.findById(userId);
+        const user = await User.findById(req.user.userId); // userId from auth middleware
         if (!user) return res.status(404).json({ error: 'User not found' });
 
         const isMatch = await bcrypt.compare(currentPassword, user.password);
         if (!isMatch) return res.status(401).json({ error: 'Current password is incorrect' });
 
-        user.password = newPassword; // Will be hashed in pre-save hook
+        // 🔐 Hash the new password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
 
+        user.password = hashedPassword;
         if (user.role === 'student') {
-            user.mustChangePassword = false; // ✅ Clear flag after student updates password
+            user.mustChangePassword = false;
         }
 
         await user.save();
