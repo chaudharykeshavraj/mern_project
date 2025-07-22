@@ -3,8 +3,8 @@ const jwt = require('jsonwebtoken');
 // ✅ Token Verification Middleware
 const auth = (req, res, next) => {
     const authHeader = req.headers['authorization'];
-    console.log('🔐 Authorization Header:', authHeader); // For debugging
-    console.log('🔐 JWT_SECRET used:', process.env.JWT_SECRET); // Should not be undefined
+    // console.log('🔐 Authorization Header:', authHeader); // For debugging
+    // console.log('🔐 JWT_SECRET used:', process.env.JWT_SECRET); // Should not be undefined
 
     if(!authHeader)
         return res.status(401).json({ error: 'Authorization header missing' });
@@ -16,12 +16,6 @@ const auth = (req, res, next) => {
     }
 
     const token = tokenParts[1];
-
-    /* if (!authHeader?.startsWith('Bearer '))
-        return res.status(400).json({ error: 'Invalid auth format' });
-
-    const token = authHeader.split(' ')[1]; */
-
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);

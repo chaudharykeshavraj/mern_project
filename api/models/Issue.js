@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 
-const IssueSchema = new mongoose.Schema({
-    student: { type: mongoose.Schema.Types.ObjectId, ref: 'Student' },
-    book: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' },
+const issueSchema = new mongoose.Schema({
+    studentId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' },
     issueDate: { type: Date, default: Date.now },
-    returnDate: Date
+    returnDate: { type: Date },
+    status: { type: String, default: 'issued' } // optional
 });
 
-module.exports = mongoose.model('Issue', IssueSchema);
+module.exports = mongoose.model('Issue', issueSchema);

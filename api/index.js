@@ -1,64 +1,45 @@
 require('dotenv').config();
 const express = require('express');
-const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path')
 
-const bookRoutes = require('./routes/books');
+const app = express();
+const PORT = process.env.PORT || 5000;
 
+// Middleware
 app.use(cors());
 app.use(express.json());
-
-const authRoutes = require('./routes/auth');
-
-// Connect Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/books', bookRoutes);
-
-const PORT = process.env.PORT || 3000;
+app.use(express.urlencoded({ extended: true })); // Required for file uploads
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('✅ MongoDB connected'))
     .catch(err => console.error('❌ MongoDB connection error:', err));
-    
-// Sample model
-const UserSchema = new mongoose.Schema({
-    name: String,
-    email: String,
-    age: Number
-});
-// const User = mongoose.model('User', UserSchema);
 
-// Test routes
-app.post('/api/users', async (req, res) => {
-    try {
-        const newUser = new User(req.body);
-        const saved = await newUser.save();
-        res.status(201).json(saved);
-    } catch (err) {
-        res.status(400).json({ error: err.message });
-    }
-});
 
-app.get('/api/users', async (req, res) => {
-    const users = await User.find();
-    res.json(users);
-});
+// Serve static uploads
+// app.use('/uploads', express.static('uploads')); // Access photos via /uploads/students/img.jpg
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Routes
+const authRoutes = require('./routes/auth');
+const bookRoutes = require('./routes/books');
+const studentRoutes = require('./routes/students');
+const issueRoutes = require('./routes/issues');
+
+app.use('/api/auth', authRoutes);
+app.use('/api/books', bookRoutes);
+app.use('/api/students', studentRoutes);
+app.use('/api/issues', issueRoutes);
+
+
+// Root Route
 app.get('/', (req, res) => {
     res.send('📚 Library Management API is running!');
 });
 
-
-// Routes
-// const bookRoutes = require('./routes/books');
-const studentRoutes = require('./routes/students');
-const issueRoutes = require('./routes/issues');
-
-app.use('/api/students', studentRoutes);
-app.use('/api/issues', issueRoutes);
-
+// Start server
 app.listen(PORT, () => {
     console.log(`🚀 Server running at http://localhost:${PORT}`);
 });

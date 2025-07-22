@@ -12,4 +12,7 @@ API.interceptors.request.use((req) => {
 export const login = (credentials) => API.post('/auth/login', credentials);
 export const register = (userData) => API.post('/auth/register', userData);
 
+export const fetchStudents = () => API.get('/students');
+export const fetchIssues = () => API.get('/issues');
+
 export default API;

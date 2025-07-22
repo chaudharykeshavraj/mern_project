@@ -2,21 +2,16 @@ const express = require('express');
 const router = express.Router();
 const Issue = require('../models/Issue');
 
-// Issue book to student
-router.post('/', async (req, res) => {
-    try {
-        const issue = new Issue(req.body);
-        const saved = await issue.save();
-        res.status(201).json(saved);
-    } catch (err) {
-        res.status(400).json({ error: err.message });
-    }
-});
-
-// Get all issued records (with student & book details)
+// Get all book issues
 router.get('/', async (req, res) => {
-    const issues = await Issue.find().populate('student').populate('book');
-    res.json(issues);
+    try {
+        const issues = await Issue.find()
+        .populate('studentId', 'name email')  // get student info
+        .populate('bookId', 'title author');  // get book info
+        res.json(issues);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch issues' });
+    }
 });
 
 module.exports = router;
