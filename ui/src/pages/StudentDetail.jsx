@@ -9,6 +9,7 @@ const StudentDetail = () => {
     const [books, setBooks] = useState([]);
     const [availableBooks, setAvailableBooks] = useState([]);
     const [selectedBookId, setSelectedBookId] = useState('');
+    const [returnDate, setReturnDate] = useState('');
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState('');
 
@@ -48,14 +49,20 @@ const StudentDetail = () => {
         return;
       }
 
+      if (!returnDate) {
+        setMessage('⚠️ Please select a return date.');
+        return;
+      }
+
       try {
-        const res = await issueBook(student._id, selectedBookId);
+        const res = await issueBook(student._id, selectedBookId, returnDate);
         setMessage('✅ Book issued successfully!');
         // Update issued books list
         setBooks(prev => [...prev, res.issuedBook]);
         // Remove from available
         setAvailableBooks(prev => prev.filter(book => book._id !== selectedBookId));
         setSelectedBookId('');
+        setReturnDate('');
       } catch (err) {
         console.error('❌ Issue failed:', err);
         setMessage('❌ Failed to issue book.');
@@ -123,6 +130,16 @@ const StudentDetail = () => {
                   </option>
                 ))}
               </select>
+            </div>
+
+            <div className="mb-2">
+              <label className="block text-sm font-medium">Return Date:</label>
+              <input
+                type="date"
+                className="border px-2 py-1 rounded"
+                value={returnDate}
+                onChange={(e) => setReturnDate(e.target.value)}
+              />
             </div>
 
             <button className="btn btn-primary" onClick={handleIssue}>

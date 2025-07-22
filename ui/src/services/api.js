@@ -18,10 +18,11 @@ export const register = (userData) => API.post('/auth/register', userData);
 
 export const fetchStudents = () => API.get('/students');
 
-export const issueBook = async (studentId, bookId) => {
+export const issueBook = async (studentId, bookId, returnDate) => {
     const res = await API.post('/books/issue', {
         studentId,
         bookId,
+        returnDate,
     });
     return res.data;
 };
