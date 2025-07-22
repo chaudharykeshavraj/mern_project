@@ -70,12 +70,27 @@ router.post('/issue', auth, roleCheck(['admin']), async (req, res) => {
 router.post('/release', auth, roleCheck(['admin']), async (req, res) => {
     const { bookId } = req.body;
 
-    const book = await Book.findById(bookId);
-    if (!book || !book.issuedTo) return res.status(404).json({ error: 'Book not issued or not found' });
+    try {
+        const book = await Book.findById(bookId);
+        if (!book) return res.status(404).json({ error: 'Book not found' });
 
-    book.issuedTo = null;
-    await book.save();
-    res.json({ message: 'Book released successfully' });
+        // Delete issue record if exists
+        // await Issue.deleteOne({ bookId: book._id });
+
+        // Add a log or history instead of delete
+        await Issue.updateOne({ bookId: book._id }, { status: 'returned', returnedAt: new Date() });
+
+        // Clear book's issued data
+        book.issuedTo = null;
+        book.returnDate = null;
+
+        await book.save();
+
+        res.json({ message: `Book "${book.title}" returned.` });
+    } catch (err) {
+        console.error('❌ Release error:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
 module.exports = router;

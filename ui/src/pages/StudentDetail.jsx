@@ -80,7 +80,7 @@ const StudentDetail = () => {
       setAvailableBooks(prev => [...prev, releasedBook]);
 
       // ✅ Show success message with book title
-      setMessage(`✅ "${releasedBook.title}" released.`);
+      setMessage(`✅ "${releasedBook.title}" returned.`);
     } catch (err) {
       console.error('❌ Release failed:', err);
       setMessage('❌ Failed to release book.');
