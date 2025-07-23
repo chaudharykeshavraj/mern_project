@@ -1,12 +1,31 @@
-# React + Vite
+# MERN Project Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend of the MERN-based Library Management System. It is built using **React** and **Vite**, with features such as routing, form handling, and API integration.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- Built with Vite for blazing-fast dev experience
+- Modern React 19 with hooks and JSX
+- React Router DOM v7 for client-side routing
+- Axios for backend API communication
+- Formik for form management
+- Bootstrap 5 UI components
+- Toast notifications using React Toastify
+- Supports photo upload (Multer-compatible backend)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠️ Technologies Used
+
+- React 19
+- Vite
+- Axios
+- React Router DOM
+- Formik
+- Bootstrap 5
+- React Toastify
+- Multer
+
+--

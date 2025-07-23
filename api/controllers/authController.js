@@ -21,6 +21,7 @@ exports.register = async (req, res) => {
         let photoPath = null;
         if (req.file) {
             photoPath = req.file.path;
+            
         }
 
         // Create new user without mustChangePassword
