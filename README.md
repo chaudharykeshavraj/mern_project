@@ -1,21 +1,3 @@
-# My Backend Project 🚀
-
-This is a simple Node.js backend project built with [Express.js](https://expressjs.com/). It provides basic routing, JSON API support, and serves as a starter template for backend development.
-
-## ✅ Features
-- Simple Express.js server
-- Basic API routes (GET and POST)
-- JSON data handling
-- Easy to extend for larger projects
-
-## ✅ API Endpoints
-
-| Method | Route          | Description                         |
-|--------|----------------|-------------------------------------|
-| GET    | `/`            | Returns a welcome message           |
-| GET    | `/api/data`    | Returns sample JSON data            |
-| POST   | `/api/submit`  | Accepts JSON data and echoes it back|
-
 ## ✅ Getting Started
 
 ### 1. Clone the Repository:
@@ -48,14 +30,9 @@ This is the backend of the MERN-based Library Management System. It is built usi
 - Development-friendly with nodemon
 - Secure password hashing (bcrypt)
 - MongoDB integration (Mongoose)
-- API documentation with Swagger
 - Role-based access control
 - Logging with Morgan
 - CORS support
-- Rate limiting
-- Unit testing with Jest
-- Integration testing with Supertest
-- Deployment-ready configuration
 ---
 ## 🛠️ Technologies Used
 - Node.js
@@ -67,12 +44,12 @@ This is the backend of the MERN-based Library Management System. It is built usi
 - Multer
 - dotenv
 - Cors
-- Rate Limiter
 - Nodemon
 - Axios
 - React Toastify
 - Bootstrap 5
 ---
+
 ## ⚙️ Installation
 ```bash
 # Clone the backend project
