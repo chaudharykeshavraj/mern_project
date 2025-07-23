@@ -33,12 +33,6 @@ const userSchema = new mongoose.Schema({
     faculty: { type: String },
     batch: { type: String },
     photo: { type: String },
-
-    mustChangePassword: {
-        type: Boolean,
-        default: true // ← default is false, we’ll override it in register route only for students
-    }
-
 }, {
     timestamps: true
 });

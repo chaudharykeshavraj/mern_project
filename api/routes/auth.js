@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');     // js is added after bcrypt
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { auth, roleCheck } = require('../middleware/auth.middleware');
@@ -75,15 +75,26 @@ router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        console.log("Login Attempt");    // temporary for student login
+        console.log("Email entered: ", email);    // temporary for student login
+
         const user = await User.findOne({ email });
 
-        // console.log('Found user:', user);   // Temporary
-        // console.log('Entered password:', password);     //Temporary
-        // console.log('Stored hash:', user?.password); // Safe in case user is null   Temporary
 
-        if (!user) return res.status(401).json({ error: 'Invalid credentials' });
+        if (!user) {
+            console.log("User not found");
+            // return res.status(401).json({ error: 'Invalid credentials' });
+            return res.status(401).json({ success: false, message: 'Invalid credentials' });
+        }
+
+        console.log('✅ User found:', user.email);   // Temporary
+        console.log('Entered password:', password);     //Temporary
+        console.log('Stored hash:', user.password); // Safe in case user is null   Temporary
+
 
         const isMatch = await bcrypt.compare(password, user.password);
+        console.log("Password match result: ", isMatch);
+
         if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
 
         const token = jwt.sign(

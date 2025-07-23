@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,6 +12,7 @@ const Login = () => {
     const [passwordError, setPasswordError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [touched, setTouched] = useState({ email: false, password: false });
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
 
     const validateEmail = (value) => {
@@ -45,20 +46,27 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsSubmitting(true);
 
-        const emailErr = validateEmail(email);
-        const passwordErr = validatePassword(password);
+        const trimmedEmail = email.trim();
+        const trimmedPassword = password.trim();
+
+        const emailErr = validateEmail(trimmedEmail);
+        const passwordErr = validatePassword(trimmedPassword);
 
         setEmailError(emailErr);
         setPasswordError(passwordErr);
         setTouched({ email: true, password: true });
 
-        if (emailErr || passwordErr) return;
+        if (emailErr || passwordErr) {
+            setIsSubmitting(false);
+            return;
+        }
 
         try {
             const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
-                email,
-                password,
+                email: trimmedEmail,
+                password: trimmedPassword,
             });
 
             const { token, user } = response.data;
@@ -67,12 +75,12 @@ const Login = () => {
 
             localStorage.setItem('token', token);
             localStorage.setItem('role', user.role);
-            localStorage.setItem('userId', user._id); // use `_id` instead of `id` if using Mongoose
+            localStorage.setItem('userId', user._id);
 
             toast.success('Login successful');
 
             setTimeout(() => {
-                if (user.mustChangePassword && user.role === 'student') {
+                if (user.role === 'student' && user.mustChangePassword) {
                     navigate('/change-password', { state: { userId: user._id } });
                 } else if (user.role === 'admin') {
                     navigate('/dashboard');
@@ -85,16 +93,15 @@ const Login = () => {
         } catch (err) {
             console.error("Login error:", err?.response?.data || err.message);
             toast.error(err?.response?.data?.error || 'Login failed!');
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
     return (
         <div className="container d-flex justify-content-center align-items-center vh-100">
             <ToastContainer position="top-right" />
-            <div
-                className="d-flex shadow"
-                style={{ maxWidth: '800px', width: '100%', borderRadius: '0.25rem' }}
-            >
+            <div className="d-flex shadow" style={{ maxWidth: '800px', width: '100%', borderRadius: '0.25rem' }}>
                 {/* Left side title */}
                 <div
                     style={{
@@ -150,6 +157,7 @@ const Login = () => {
                                         className="input-group-text"
                                         style={{ cursor: 'pointer' }}
                                         onClick={() => setShowPassword(!showPassword)}
+                                        aria-label={showPassword ? "Hide password" : "Show password"}
                                     >
                                         {showPassword ? <FaEyeSlash /> : <FaEye />}
                                     </span>
@@ -157,11 +165,17 @@ const Login = () => {
                                 {passwordError && <div className="invalid-feedback">{passwordError}</div>}
                             </div>
 
-                            <button type="submit" className="btn btn-primary w-100">Login</button>
+                            <button
+                                type="submit"
+                                className="btn btn-primary w-100"
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? "Logging in..." : "Login"}
+                            </button>
                         </form>
                         <div className="mt-3 text-center">
                             <small>
-                                Don't have an account? <a href="/register">Register here</a>
+                                Don't have an account? <Link to="/register">Register here</Link>
                             </small>
                         </div>
                     </div>

@@ -1,107 +1,109 @@
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');  // Use bcryptjs for consistency
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-// const { generateToken } = require('../utils/jwt'); // Optional for JWT
 
 // User registration controller
 exports.register = async (req, res) => {
     try {
-        // 1. Extract data from request body
         const { name, email, password, role, roll, faculty, batch } = req.body;
-        
-        // 2. Check if user already exists
+
+        // Check if user already exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-        return res.status(400).json({ message: 'User already exists' });
+            return res.status(400).json({ success: false, message: 'User already exists' });
         }
-        
-        // 3. Hash password
+
+        // Hash password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-        
-        // 4. Handle photo upload - THIS FIXES THE NULL ISSUE
+
+        // Handle photo upload
         let photoPath = null;
         if (req.file) {
-        // Save relative path: "uploads/students/filename.jpg"
-        photoPath = req.file.path;
+            photoPath = req.file.path;
         }
-        
-        // 5. Create new user
+
+        // Create new user without mustChangePassword
         const newUser = new User({
-        name,
-        email,
-        password: hashedPassword,
-        role: role || 'student', // Default to student
-        roll,
-        faculty,
-        batch,
-        photo: photoPath, // Will be null if no file uploaded
-        mustChangePassword: true // Force password change
+            name,
+            email,
+            password: hashedPassword,
+            role: role || 'student',
+            roll,
+            faculty,
+            batch,
+            photo: photoPath,
         });
-        
-        // 6. Save user to database
+
+        // Save user to DB
         const savedUser = await newUser.save();
-        
-        // 7. Remove password from response
+
+        // Remove password from response
         savedUser.password = undefined;
-        
-        // 8. Send response
+
+        // Send success response
         res.status(201).json({
-        success: true,
-        message: 'User registered successfully',
-        user: savedUser
+            success: true,
+            message: 'User registered successfully',
+            user: savedUser
         });
-        
     } catch (error) {
-        console.error('Registration error:', error);
+        console.error('❌ Registration error:', error);
         res.status(500).json({
-        success: false,
-        message: 'Internal server error',
-        error: error.message
+            success: false,
+            message: 'Internal server error',
+            error: error.message
         });
     }
 };
 
-// Optional: Add login controller if needed
+// User login controller
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // 1. Check if user exists
+        console.log("📥 Login Attempt");
+        console.log("Email entered:", email);
+        console.log("Entered password:", password);
+
+        // Check if user exists
         const user = await User.findOne({ email });
         if (!user) {
-        return res.status(401).json({ success: false, message: 'Invalid credentials' });
+            console.log("❌ User not found for email:", email);
+            return res.status(401).json({ success: false, message: 'Invalid credentials' });
         }
 
-        // 2. Compare password
+        console.log("✅ User found:", user.email);
+        console.log("Stored hash:", user.password);
+
+        // Compare password
         const isMatch = await bcrypt.compare(password, user.password);
+        console.log("🔍 Password match result:", isMatch);
+
         if (!isMatch) {
-        return res.status(401).json({ success: false, message: 'Invalid credentials' });
+            console.log("❌ Password does not match.");
+            return res.status(401).json({ success: false, message: 'Invalid credentials' });
         }
 
-        // 3. Generate token (optional, for session/auth handling)
+        // Generate JWT token
         const token = jwt.sign(
-        { userId: user._id, role: user.role },
-        process.env.JWT_SECRET || 'yourSecretKey',
-        { expiresIn: '1d' }
+            { userId: user._id, role: user.role },
+            process.env.JWT_SECRET || 'yourSecretKey',
+            { expiresIn: '1d' }
         );
 
-        // 4. Hide password before sending response
+        // Remove password from user object
         const { password: _, ...userWithoutPassword } = user.toObject();
 
-        // 5. Send response with optional forceChange flag
+        // Send success response (no forceChange flag)
         res.status(200).json({
-        success: true,
-        message: user.mustChangePassword
-            ? 'Password must be changed'
-            : 'Login successful',
-        user: userWithoutPassword,
-        token,
-        forceChange: user.mustChangePassword,
+            success: true,
+            message: 'Login successful',
+            user: userWithoutPassword,
+            token,
         });
-
     } catch (error) {
-        console.error('Login error:', error.message);
+        console.error('❌ Login error:', error.message);
         res.status(500).json({ success: false, message: 'Server error' });
     }
 };
