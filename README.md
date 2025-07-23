@@ -20,7 +20,7 @@ This is a simple Node.js backend project built with [Express.js](https://express
 
 ### 1. Clone the Repository:
 ```bash
-git clone https://github.com/YOUR_USERNAME/my-backend-project.git
+git clone https://github.com/chaudharykeshavraj/mern_project.git
 cd my-backend-project
 
 ```md
