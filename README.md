@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # MERN Project Backend
 
 A backend server built using Node.js, Express, MongoDB, and Mongoose. This server handles user authentication, file uploads, and student/book management logic for a MERN stack project.
@@ -75,8 +74,6 @@ cd my-backend-project
 - Bootstrap 5
 - React Toastify
 - Multer
-
-<<<<<<< HEAD
 ---
 
 ## ⚙️ Installation
