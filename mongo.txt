@@ -17,3 +17,14 @@ auth:
 // Siddhartha Authentication 
 username: bhattaraisiddhartha34
 password: DoXl1m8A0QAOzUua
+
+
+.env
+PORT=5000
+MONGO_URI=mongodb+srv://keshav:keshav2004@mern-project.rdtqlk6.mongodb.net/?retryWrites=true&w=majority&appName=MERN-PROJECT
+
+JWT_SECRET=secret123
+
+
+.env
+VITE_API_URL=http://localhost:5000
