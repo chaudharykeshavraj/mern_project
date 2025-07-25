@@ -8,7 +8,10 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: 'https://library-back-75i6.onrender.com',
+    credentials: true, // Allow cookies to be sent
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Required for file uploads
 
