@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API = axios.create({ 
     baseURL: 'https://library-back-75i6.onrender.com/api', 
-    // withCredentials: true,
+    withCredentials: true,
 });
 
 // Add token automatically if logged in

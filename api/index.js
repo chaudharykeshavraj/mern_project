@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-    origin: 'https://library-back-75i6.onrender.com',
+    origin: 'https://library-front-8az0.onrender.com',
     credentials: true, // Allow cookies to be sent
 }));
 app.use(express.json());
