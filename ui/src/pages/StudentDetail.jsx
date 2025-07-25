@@ -97,6 +97,7 @@ const StudentDetail = () => {
         <div className="row">
           {/* Student Info */}
           <div className="col-md-4 text-center">
+            {console.log("📸 student.photo =", student.photo)}  {/* ✅ Add this line */}
             <img
               src={student.photo ? `${backendUrl}${student.photo}` : '/default-avatar.png'}
               alt={student.name}
