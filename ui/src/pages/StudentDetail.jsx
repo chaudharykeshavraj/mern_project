@@ -98,7 +98,7 @@ const StudentDetail = () => {
           {/* Student Info */}
           <div className="col-md-4 text-center">
             <img
-              src={student.photo ? `${backendUrl}${student.photo}` : '/default-avatar.png'}
+              src={student.photo ? `${backendUrl}/uploads/students/${student.photo}` : '/default-avatar.png'}
               alt={student.name}
               className="img-fluid rounded"
               style={{ maxHeight: '200px', objectFit: 'cover' }}
