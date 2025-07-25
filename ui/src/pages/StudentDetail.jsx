@@ -13,7 +13,7 @@ const StudentDetail = () => {
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState('');
 
-    const backendUrl = 'http://localhost:5000';
+    const backendUrl = 'https://library-back-75i6.onrender.com';
 
     useEffect(() => {
       const fetchStudent = async () => {
