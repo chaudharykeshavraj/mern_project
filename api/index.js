@@ -4,10 +4,6 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path')
 
-// Serve static uploads
-// app.use('/uploads', express.static('uploads')); // Access photos via /uploads/students/img.jpg
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -21,8 +17,11 @@ app.use(express.urlencoded({ extended: true })); // Required for file uploads
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log('✅ MongoDB connected'))
-    .catch(err => console.error('❌ MongoDB connection error:', err));
+.then(() => console.log('✅ MongoDB connected'))
+.catch(err => console.error('❌ MongoDB connection error:', err));
+
+// Serve static uploads
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 const authRoutes = require('./routes/auth');
