@@ -51,7 +51,7 @@ router.post('/register', auth, roleCheck(['admin']), (req, res) => {
             faculty,
             batch,
             photo: photoPath, // THIS SHOULD NOW WORK
-            mustChangePassword: role === 'student',
+            // mustChangePassword: role === 'student',
         });
 
         await newUser.save();
@@ -110,7 +110,7 @@ router.post('/login', async (req, res) => {
                 name: user.name,
                 email: user.email,
                 role: user.role,
-                mustChangePassword: user.mustChangePassword || false
+                // mustChangePassword: user.mustChangePassword || false
             }
         });
     } catch (err) {
@@ -120,7 +120,7 @@ router.post('/login', async (req, res) => {
 });
 
 // ✅ Change Password route (student after first login)
-router.post('/change-password', auth, async (req, res) => {
+{/* router.post('/change-password', auth, async (req, res) => {
     const { currentPassword, newPassword } = req.body;
 
     if (!currentPassword || !newPassword) {
@@ -149,6 +149,6 @@ router.post('/change-password', auth, async (req, res) => {
         console.error('Change password error:', err);
         res.status(500).json({ error: 'Server error' });
     }
-});
+}); */}
 
 module.exports = router;
