@@ -48,7 +48,7 @@ const AddBook = () => {
         try {
             console.log("📦 Sending book with token:", cleanedBook, token); // for debugging
 
-            const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/books`, 
+            const res = await axios.post(`${import.meta.env.VITE_API_URL}/books`, 
             cleanedBook,
             {
                 headers: {
