@@ -34,7 +34,7 @@ const Books = () => {
                             <th>Title</th>
                             <th>Author</th>
                             <th>Published Year</th>
-                            <th>Actions</th>
+                            <th>Quantity</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,9 +43,7 @@ const Books = () => {
                                 <td>{book.title}</td>
                                 <td>{book.author}</td>
                                 <td>{book.publishedYear}</td>
-                                <td>
-                                    <button className="btn btn-danger btn-sm">Delete</button>
-                                </td>
+                                <td>{book.quantity}</td>
                             </tr>
                         ))}
                     </tbody>
